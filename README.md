@@ -114,6 +114,10 @@ Two snippets are included for slide authoring:
 - [Marp CLI Documentation](https://github.com/marp-team/marp-cli)
 - [Marpit Framework (directives, themes)](https://marpit.marp.app/)
 
+## Acknowledgements
+
+The custom themes in this repository are based on [Awesome-Marp](https://github.com/favourhong/Awesome-Marp) by favourhong.
+
 ## License
 
 MIT
