@@ -1,0 +1,26 @@
+{
+	"Page: 1 figure": {
+		"scope": "markdown",
+		"prefix": "page_1_fig",
+		"body": [
+		    "## $0",
+			"<!-- _class: caption -->",
+			"![#c h:480px](./figures/example.png)",
+			"<div class=\"caption\">",
+			"URL",
+			"</div>"
+		],
+		"description": "Page with one figure and one caption"
+	},
+	"Trans page": {
+		"scope": "markdown",
+		"prefix": "page_trans",
+		"body": [
+			"## $0",
+			"<!-- _class: trans -->",
+			"<!-- _footer: \"\" -->",
+			"<!-- _paginate: \"\" -->"
+		],
+		"description": "Trans page"
+	}
+}

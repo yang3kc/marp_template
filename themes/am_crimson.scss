@@ -1,0 +1,20 @@
+/* @theme am_crimson */
+
+@import 'am_template';
+
+:root {
+  --color-code-bg: #ffd6de;
+  --color-coverbg: #990000;
+  --color-few: #91a814;
+  --color-footer: #8c8c8c;
+  --color-main: #041d22;
+  --color-much: #990000;
+  --color-navbar-bg: #DD0031;
+  --color-navbar-font: rgb(108, 95, 91);
+  --color-quote: rgba(254, 176, 98, 0.1);
+  --color-title: rgb(255, 255, 255);
+  --color-trans: #990000;
+  --filter-b: brightness(30%) contrast(70%) grayscale(100%);
+  --filter-c: brightness(0%) contrast(60%) grayscale(80%);
+  --filter-e: brightness(0%) contrast(70%) grayscale(100%);
+}
