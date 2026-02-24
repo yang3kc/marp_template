@@ -30,6 +30,13 @@ npx @marp-team/marp-cli@latest -p example.md
 npx @marp-team/marp-cli@latest -w example.md
 ```
 
+### My workflow
+
+I use Cursor (any VSCode fork should work) to edit the slides and preview them in real time.
+Then I use the Makefile to build the slides to PDFs.
+
+With CLAUDE.md, Claude Code also understands the syntax of the MARP slides and can help create slides if you provide the context and content.
+
 ## Custom Themes
 
 Three themes are available: `am_crimson`, `am_blue`, `am_template`. Set the theme in your front matter:
