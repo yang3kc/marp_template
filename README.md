@@ -1,129 +1,73 @@
-# Marp Slide Template
+# marp-slides — Claude Code Skill
 
-A reusable slide template with custom themes and a Make-based build system for [Marp](https://marp.app/) (Markdown Presentation Ecosystem).
+A Claude Code skill for authoring and building [Marp](https://marp.app/) slide decks. It ships three custom SCSS themes, a Make-based PDF build system, `init`/`sync` scripts the agent uses to bootstrap and maintain slides directories in project repos, and a `SKILL.md` that teaches the agent the full slide-class catalog.
 
-## Quick Start
+## Skill layout
 
-### Prerequisites
+```
+skills/marp-slides/
+├── SKILL.md               ← agent instructions + full slide-class catalog
+├── Makefile               ← drives npx @marp-team/marp-cli@latest
+├── template_slides.md     ← starter deck to copy per project
+├── themes/
+│   ├── am_template.scss   ← base theme (~1600 lines)
+│   ├── am_crimson.scss    ← color palette override
+│   └── am_blue.scss       ← color palette override
+├── vscode/
+│   ├── settings.json      ← registers themes with Marp VS Code extension
+│   └── slides_snippets.code-snippets
+└── scripts/
+    ├── init.sh            ← bootstrap a project's slides directory
+    └── sync.sh            ← pull upstream theme/Makefile updates into a project
+```
 
-- **Node.js** (for Marp CLI via npx)
-- **Chrome/Chromium/Firefox** (for PDF export)
-- Recommended: [Marp for VS Code](https://marketplace.visualstudio.com/items?itemName=marp-team.marp-vscode) extension for in-editor preview
-
-### Create Slides
-
-1. Copy `example.md` as a starting point
-2. Edit your slides in Markdown — use `---` to separate slides
-3. Build to PDF:
-   ```bash
-   make all                    # Build all slides
-   make PDFs/example.pdf       # Build a single file
-   ```
-
-### Preview & Development
+## Install the skill
 
 ```bash
-# Live preview in browser
-npx @marp-team/marp-cli@latest -p example.md
+# Using the skills CLI
+npx skills install https://github.com/yang3kc/marp_template
 
-# Watch mode (auto-rebuild on save)
-npx @marp-team/marp-cli@latest -w example.md
+# Or clone manually
+git clone git@github.com:yang3kc/marp_template.git ~/.claude/skills/marp-slides
 ```
 
-### My workflow
+Once installed, the agent activates `marp-slides` automatically when you ask to create slides, add a deck to a project, or sync slide themes.
 
-I use Cursor (any VSCode fork should work) to edit the slides and preview them in real time.
-Then I use the Makefile to build the slides to PDFs.
-
-With CLAUDE.md, Claude Code also understands the syntax of the MARP slides and can help create slides if you provide the context and content.
-
-## Custom Themes
-
-Three themes are available: `am_crimson`, `am_blue`, `am_template`. Set the theme in your front matter:
-
-```yaml
----
-marp: true
-theme: am_crimson
-paginate: true
-headingDivider: [2,3]
----
-```
-
-### Slide Classes
-
-Apply with `<!-- _class: classname -->`:
-
-| Category | Classes |
-|----------|---------|
-| **Cover** | `cover_a`, `cover_b`, `cover_c`, `cover_d`, `cover_e` |
-| **Table of contents** | `toc_a`, `toc_b` |
-| **Columns** | `cols-2`, `cols-3`, `cols-2-64`, `cols-2-46`, `cols-2-73`, `cols-2-37` |
-| **Rows** | `rows-2`, `pin-3` |
-| **Lists** | `col1_ol_sq`, `col1_ol_ci`, `cols2_ol_sq`, `cols2_ol_ci`, `cols2_ul_sq`, `cols2_ul_ci` |
-| **Special** | `trans`, `caption`, `navbar`, `lastpage`, `footnote` |
-| **Text size** | `tinytext`, `smalltext`, `largetext`, `hugetext` |
-| **Blockquote** | `bq-blue`, `bq-red`, `bq-green`, `bq-purple`, `bq-black` |
-
-### Column Layouts
-
-```markdown
-<!-- _class: cols-2 -->
-## Slide Title
-
-<div class="ldiv">
-Left content
-</div>
-
-<div class="rdiv">
-Right content
-</div>
-```
-
-Use `ldiv`/`rdiv` for text, `limg`/`rimg` for images.
-
-### Image Modifiers
-
-Images have drop shadows by default. Control with alt text modifiers:
-
-- `#noshadow` or `#ns` — remove shadow
-- `#l` — float left
-- `#r` — float right
-- `#c` — center
-
-Example: `![Diagram #c #ns](images/diagram.png)`
-
-## Build System
+## Bootstrap slides in a project (without the agent)
 
 ```bash
-make all       # Build all slides to PDFs/
-make list      # Show available markdown files
-make clean     # Remove all generated PDFs
-make help      # Show all targets
+cd skills/marp-slides
+bash scripts/init.sh /absolute/path/to/project/slides
 ```
 
-To build with custom themes manually:
+This copies `themes/`, `Makefile`, `template_slides.md`, and `.vscode/` into the target directory and appends `PDFs/` and `node_modules/` to the nearest `.gitignore`.
+
+## Sync upstream theme/Makefile updates into a project
 
 ```bash
-npx @marp-team/marp-cli@latest slides/deck.md -o output.pdf --pdf --theme-set themes/*.scss --allow-local-files
+bash scripts/sync.sh /absolute/path/to/project/slides
+
+# Force-overwrite without confirmation
+bash scripts/sync.sh --force /absolute/path/to/project/slides
 ```
 
-## VS Code Snippets
+## Prerequisites
 
-Two snippets are included for slide authoring:
+- **Node.js** (for `npx @marp-team/marp-cli@latest`)
+- **Chrome/Chromium/Firefox** (for PDF rendering)
+- Recommended: [Marp for VS Code](https://marketplace.visualstudio.com/items?itemName=marp-team.marp-vscode) for live preview
 
-- `page_1_fig` — page with centered figure and caption
-- `page_trans` — transition slide
+See [`skills/marp-slides/SKILL.md`](skills/marp-slides/SKILL.md) for the full authoring guide and slide-class catalog.
 
 ## Resources
 
 - [Marp Official Site](https://marp.app/)
 - [Marp CLI Documentation](https://github.com/marp-team/marp-cli)
-- [Marpit Framework (directives, themes)](https://marpit.marp.app/)
+- [Marpit Framework](https://marpit.marp.app/)
 
 ## Acknowledgements
 
-The custom themes in this repository are based on [Awesome-Marp](https://github.com/favourhong/Awesome-Marp) by favourhong.
+The custom themes are based on [Awesome-Marp](https://github.com/favourhong/Awesome-Marp) by favourhong.
 
 ## License
 

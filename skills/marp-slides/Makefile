@@ -6,7 +6,7 @@ PDF_DIR = PDFs
 MARP_CLI = npx @marp-team/marp-cli@latest
 
 # Find all .md files excluding README.md and template files
-MD_FILES = $(shell find . -name "*.md" -not -name "README.md" -not -name "CLAUDE.md" -not -name "example.md" -type f)
+MD_FILES = $(shell find . -name "*.md" -not -name "README.md" -not -name "template_slides.md" -type f)
 
 # Generate PDF paths maintaining directory structure
 PDF_FILES = $(patsubst ./%.md,$(PDF_DIR)/%.pdf,$(MD_FILES))
