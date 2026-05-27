@@ -1,19 +1,19 @@
 ---
 name: marp-slides
-description: Author and build Marp slide decks using the marp_template themes and Makefile. Use this skill when the user asks to create slides, add a presentation deck to a project, build PDF slides, or author Marp markdown. Provides init/sync scripts to bootstrap a slides directory in a project repo and to pull theme/Makefile updates from upstream.
+description: Author and build Marp slide decks using custom themes and a Make-based build system. Apply this skill when the user asks to create slides, add a presentation deck to a project, build PDF slides, or author Marp markdown. Provides init/sync scripts to bootstrap a slides directory in a project repo and to pull theme/Makefile updates from upstream.
 ---
 
 # Marp Slides
 
-## When to Use
+## When to Apply
 
-Activate this skill when the user says things like:
+Apply this skill when the user says things like:
 - "create slides", "make a slide deck", "add a Marp presentation"
 - "add slides to this project", "set up slides under `materials/slides/`"
 - "build PDF slides", "author a Marp deck"
 - "update slide themes", "sync slide template", "sync themes from the template"
 
-Do **not** activate if slides already exist in the project using a different system (PPTX, Quarto reveal, LaTeX beamer, etc.) unless the user explicitly wants to switch.
+Do **not** apply if slides already exist in the project using a different system (PPTX, Quarto reveal, LaTeX beamer, etc.) unless the user explicitly wants to switch.
 
 ## End-State: What a Project's Slides Directory Looks Like
 

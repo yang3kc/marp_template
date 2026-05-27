@@ -1,6 +1,8 @@
-# marp-slides — Claude Code Skill
+# marp-slides — AI Agent Skill
 
-A Claude Code skill for authoring and building [Marp](https://marp.app/) slide decks. It ships three custom SCSS themes, a Make-based PDF build system, `init`/`sync` scripts the agent uses to bootstrap and maintain slides directories in project repos, and a `SKILL.md` that teaches the agent the full slide-class catalog.
+An agent skill for authoring and building [Marp](https://marp.app/) slide decks. It ships three custom SCSS themes, a Make-based PDF build system, `init`/`sync` scripts for bootstrapping and maintaining slides directories in project repos, and a `SKILL.md` that teaches any AI agent the full slide-class catalog.
+
+Compatible with Claude Code, Cursor, Windsurf, GitHub Copilot, and any other agent that accepts markdown instruction files.
 
 ## Skill layout
 
@@ -23,15 +25,26 @@ skills/marp-slides/
 
 ## Install the skill
 
-```bash
-# Using the skills CLI
-npx skills install https://github.com/yang3kc/marp_template
+Clone this repo into the skills directory your agent reads from:
 
-# Or clone manually
+```bash
+# Claude Code
 git clone git@github.com:yang3kc/marp_template.git ~/.claude/skills/marp-slides
+
+# Cursor — add to your project rules or global rules directory
+git clone git@github.com:yang3kc/marp_template.git .cursor/skills/marp-slides
+
+# Any agent — clone anywhere, then point your agent at skills/marp-slides/SKILL.md
+git clone git@github.com:yang3kc/marp_template.git /path/to/your/skills/marp-slides
 ```
 
-Once installed, the agent activates `marp-slides` automatically when you ask to create slides, add a deck to a project, or sync slide themes.
+For agents that support the [`vercel-labs/skills`](https://github.com/vercel-labs/skills) CLI:
+
+```bash
+npx skills install https://github.com/yang3kc/marp_template
+```
+
+Once the skill is available to your agent, it activates automatically when you ask to create slides, add a deck to a project, or sync slide themes.
 
 ## Bootstrap slides in a project (without the agent)
 
