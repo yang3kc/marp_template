@@ -6,8 +6,8 @@ paginate: true
 ---
 
 <!-- Deliberately no `headingDivider`. It inserts a slide break before every
-     h2/h3, which strands a `<!-- _class: ... -->` directive on its own blank
-     slide and leaves the heading unstyled on the next one. Use explicit `---`
+     h2/h3, which strands a `_class:` directive on its own blank slide and
+     leaves the heading unstyled on the next one. Use explicit `---`
      separators, as below. -->
 
 
