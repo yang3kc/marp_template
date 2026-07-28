@@ -90,9 +90,13 @@ marp: true
 size: 16:9
 theme: am_crimson
 paginate: true
-headingDivider: [2,3]
 ---
 ```
+
+**Do not add `headingDivider`.** It inserts a slide break before every heading
+at the listed levels, which strands a `<!-- _class: ... -->` directive on its own
+blank slide and leaves the heading unstyled on the next one — silently turning
+one transition slide into two broken ones. Use explicit `---` separators.
 
 ## Slide Classes
 
@@ -142,7 +146,55 @@ Images have drop shadows by default. Control via alt text:
 
 Example: `![My image #c #ns](image.png)`
 
-Constrain height with Marp's native syntax: `![h:300px](image.png)`
+## Sizing Figures
+
+Size with Marp's native syntax — `![h:300px](image.png)` or `![w:1050px](image.png)`.
+Both are honoured exactly and preserve the source aspect ratio.
+
+- **Set the binding dimension only.** Use `w:` for wide figures and `h:` for
+  tall ones. Setting both distorts.
+- **Usable content box**, measured for this theme at 16:9. Max figure height on
+  a slide with a title is about **540 CSS px** (560 overflows); widths by layout:
+
+  | Container | Width |
+  |---|---|
+  | full-width slide | **1123 px** |
+  | `cols-2-64` left panel | **674 px** |
+  | `cols-2` half panel | **561 px** |
+
+  Exceeding the height overflows the slide. Exceeding the width overflows the
+  panel — explicit `h:`/`w:` sizing is no longer silently clamped, so check the
+  render.
+- **Wide figures need a full-width slide.** A figure wider than about 2:1 placed
+  in a column panel is clamped to the column and wastes most of the slide. Put
+  it on its own slide with a caption line underneath.
+- **Split multi-panel journal figures** into one panel per slide rather than
+  shrinking the composite. Paper figures are sized for a two-column page and are
+  unreadable from the back of a room. `magick figure.png -crop WxH+X+Y +repage
+  -trim +repage panel.png` after rasterising the source PDF with
+  `pdftoppm -png -r 200`.
+
+> Historical note: the theme's `img { max-width: 95% }` used to fight Marp's
+> inline sizing and squeeze every explicitly sized figure out of aspect. That is
+> fixed in `am_template.scss`; if you inherit an older theme copy, run
+> `scripts/sync.sh` or the figures will be silently distorted.
+
+## Verify the Built Deck
+
+A 5% horizontal squeeze is invisible by eye but obvious in the numbers. After
+building, check the rendered geometry of every image against its source:
+
+```bash
+pdfimages -list PDFs/deck.pdf
+# displayed_pt = px / ppi * 72
+# Compare that aspect ratio against the source file's (magick identify).
+# Any mismatch beyond rounding means the figure is distorted.
+```
+
+Also worth a look: `pdfinfo PDFs/deck.pdf | grep Pages` should equal your `---`
+separator count plus one. More pages than that means something inserted a break
+you did not intend. To eyeball layout without opening a viewer, render to images
+with `pdftoppm -png -r 80 PDFs/deck.pdf /tmp/slide` and inspect them.
 
 ## Build Commands
 
@@ -188,8 +240,9 @@ Two snippets are included (activate with `Ctrl+Space` in a `.md` file):
 ## Authoring Tips
 
 - **Images:** store in a `figures/` or `images/` subdirectory alongside the deck. Reference with relative paths: `![#c](./figures/diagram.png)`.
-- **Transition slides:** use `<!-- _class: trans -->` with `<!-- _footer: "" -->` and `<!-- _paginate: "" -->` to suppress footer/page number.
-- **Cover slide:** suppress header, footer, and pagination with `<!-- _header: "" -->`, `<!-- _footer: "" -->`, `<!-- _paginate: "" -->`.
-- **Last slide:** `<!-- _class: lastpage -->` — uses social-icon glyphs from Font Awesome; internet access needed at build time to load the font CSS.
+- **Transition slides:** use `<!-- _class: trans -->` with `<!-- _footer: "" -->` and `<!-- _paginate: "" -->` to suppress footer/page number. Keep the directive and its heading on the same slide, between the same pair of `---` separators.
+- **Cover slide:** suppress header, footer, and pagination with `<!-- _header: "" -->`, `<!-- _footer: "" -->`, `<!-- _paginate: "" -->`. `cover_a` positions the title and subtitle absolutely (28% / 38%), so a title long enough to wrap collides with the subtitle — shorten it or override `top` in a per-deck `<style>` block.
+- **Last slide:** `<!-- _class: lastpage -->` — a two-row grid of `heading` then `icons`. Only the heading and a `.icons` div get placed; other body content lands outside the named areas and renders below the colour band. Uses social-icon glyphs from Font Awesome; internet access needed at build time to load the font CSS.
+- **Column panels** (`ldiv`/`rdiv`/`mdiv`) are left-aligned; full-width prose keeps the theme's justified setting.
 - **Long bullet lists:** use `tinytext` or `smalltext` classes to prevent overflow.
 - **Adding a new color palette:** create a new `.scss` file that `@import 'am_template'` and overrides the CSS variables (`--color-coverbg`, `--color-much`, etc.).

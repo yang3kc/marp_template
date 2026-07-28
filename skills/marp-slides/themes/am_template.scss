@@ -31,6 +31,13 @@ section {
   text-align: justify;
   }
 
+/* Justified text opens large word gaps in the narrow column panels.
+   Full-width prose keeps the justified setting from `section` above —
+   this selector's specificity (0,1,0) beats it only for column content. */
+.ldiv, .rdiv, .mdiv {
+  text-align: left;
+}
+
 h1 {
   font-family: var(--font-family-title);
   font-size: var(--font-size-1);
@@ -240,7 +247,18 @@ img {
   max-width: 95% ;
   border-radius: 8px;
   margin: auto;
+  object-fit: contain;
   filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+}
+
+/* Marp's `h:`/`w:` directives emit an inline width/height on the <img>.
+   The 95% clamp above fights them: inside the flex column panels
+   (.limg/.rimg) the percentage resolves against the image's own width, so
+   it shrinks the width while the inline height stays fixed and the figure
+   renders squeezed out of aspect. Explicit sizing wins; `object-fit` above
+   is the backstop if some other rule forces a box. */
+img[style*="width"], img[style*="height"] {
+  max-width: none;
 }
 
 img[alt*='#l'] {
@@ -1362,7 +1380,11 @@ section.lastpage  {
       "icons";
 }
 
-section.lastpage h6 {
+/* h1 is aliased to h6 here so `# Thank You` — the heading level the
+   template and most authors reach for — lands in the `heading` grid area.
+   Without it the heading falls outside the named areas and the slide
+   renders with its content dumped below the colour band. */
+section.lastpage h6, section.lastpage h1 {
   height: 80px;
   margin-bottom: 10px;
   text-align: center;
@@ -1379,7 +1401,7 @@ section.lastpage h6 {
   justify-content: center;
 }
 
-section.lastpage h6 {
+section.lastpage h6, section.lastpage h1 {
   grid-area: heading;
 }
 
